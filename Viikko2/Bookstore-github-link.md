@@ -1,11 +1,11 @@
 # Bookstore-projektin GitHub-linkki
 
 Bookstore-projekti (SP2, tehtava 5) sijaitsee tässä samassa kurssirepositoriossa
-kansiossa `Viikko2/Bookstore`.
+repositorion juuressa kansiossa `Bookstore`.
 
 ## Linkki projektiin
 
-https://github.com/Tozu2500/Back-end--ohjelmointi---SOF003AS3A-3027/tree/Projects/Viikko2/Bookstore
+https://github.com/Tozu2500/Back-end--ohjelmointi---SOF003AS3A-3027/tree/Projects/Bookstore
 
 ## Linkki koko repositorioon
 
