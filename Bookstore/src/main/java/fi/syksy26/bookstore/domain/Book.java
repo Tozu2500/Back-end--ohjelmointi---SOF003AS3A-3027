@@ -6,6 +6,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Book {
@@ -14,14 +21,32 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    // Validointisaannot: tarkistetaan lomakkeen tallennuksessa (@Valid controllerissa)
+    @NotBlank(message = "Title is required")
+    @Size(max = 200, message = "Title must be at most 200 characters")
     private String title;
+
+    @NotBlank(message = "Author is required")
+    @Size(max = 100, message = "Author must be at most 100 characters")
     private String author;
+
     // HUOM: ei saa olla "year", koska se on varattu sana SQL:ssa
+    @Min(value = 1450, message = "Year must be 1450 or later")
+    @Max(value = 2100, message = "Year must be 2100 or earlier")
     private int publicationYear;
+
+    // ISBN: 10 tai 13 numeroa, valissa saa olla viivoja tai valilyonteja (esim. 978-0-261-10221-4)
+    @NotBlank(message = "ISBN is required")
+    @Pattern(regexp = "^(?:\\d[- ]*){9}\\d$|^(?:\\d[- ]*){12}\\d$",
+             message = "ISBN must contain 10 or 13 digits (hyphens and spaces allowed)")
     private String isbn;
+
+    @PositiveOrZero(message = "Price cannot be negative")
+    @Max(value = 10000, message = "Price must be at most 10000")
     private double price;
 
     // Monta kirjaa voi kuulua yhteen kategoriaan
+    @NotNull(message = "Category is required")
     @ManyToOne
     @JoinColumn(name = "categoryid")
     private Category category;
