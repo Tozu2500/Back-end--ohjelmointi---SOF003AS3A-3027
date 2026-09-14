@@ -2,6 +2,8 @@ package fi.syksy26.bookstore.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,8 @@ public class Category {
     private String name;
 
     // Yksi kategoria voi sisaltaa monta kirjaa
+    // JsonIgnore estaa loputtoman silmukan JSON:ssa (kirja -> kategoria -> kirjat -> ...)
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private List<Book> books;
 

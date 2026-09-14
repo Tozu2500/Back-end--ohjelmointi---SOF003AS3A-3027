@@ -1,11 +1,14 @@
 package fi.syksy26.bookstore.web;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import fi.syksy26.bookstore.domain.Book;
 import fi.syksy26.bookstore.domain.BookRepository;
@@ -20,6 +23,12 @@ public class BookController {
     public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
         this.categoryRepository = categoryRepository;
+    }
+
+    // Etusivu ohjaa kirjalistaan
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/booklist";
     }
 
     @GetMapping("/index")
@@ -63,6 +72,18 @@ public class BookController {
         model.addAttribute("book", bookRepository.findById(bookId).orElseThrow());
         model.addAttribute("categories", categoryRepository.findAll());
         return "editbook"; // editbook.html
+    }
+
+    // REST: palauttaa kaikki kirjat JSON-muodossa
+    @GetMapping("/books")
+    public @ResponseBody Iterable<Book> bookListRest() {
+        return bookRepository.findAll();
+    }
+
+    // REST: palauttaa yhden kirjan id:n perusteella JSON-muodossa
+    @GetMapping("/book/{id}")
+    public @ResponseBody Optional<Book> findBookRest(@PathVariable("id") Long bookId) {
+        return bookRepository.findById(bookId);
     }
 
 }
