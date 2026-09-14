@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Bookstore</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Books</h1>
+			<table class="table table-striped">
+				<tr>
+					<th>Title</th>
+					<th>Author</th>
+					<th>Year</th>
+					<th>ISBN</th>
+					<th>Price</th>
+					<th>Category</th>
+					<th></th>
+					<th></th>
+				</tr>
+				<tr th:each="book : ${books}">
+					<td th:text="${book.title}">Title</td>
+					<td th:text="${book.author}">Author</td>
+					<td th:text="${book.publicationYear}">2000</td>
+					<td th:text="${book.isbn}">ISBN</td>
+					<td th:text="${book.price}">0.0</td>
+					<td th:text="${book.category != null} ? ${book.category.name} : ''">Category</td>
+					<td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${book.id})}">Delete</a></td>
+					<td><a class="btn btn-primary" th:href="@{/edit/{id}(id=${book.id})}">Edit</a></td>
+				</tr>
+			</table>
+			<a class="btn btn-success" href="/add" th:href="@{/add}">Add Book</a>
+		</div>
+	</body>
+</html>
