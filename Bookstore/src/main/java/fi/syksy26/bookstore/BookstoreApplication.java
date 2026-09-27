@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import fi.syksy26.bookstore.domain.AppUser;
+import fi.syksy26.bookstore.domain.AppUserRepository;
 import fi.syksy26.bookstore.domain.Book;
 import fi.syksy26.bookstore.domain.BookRepository;
 import fi.syksy26.bookstore.domain.Category;
@@ -22,7 +24,8 @@ public class BookstoreApplication {
 	}
 
 	@Bean
-	public CommandLineRunner bookstoreRunner(BookRepository bookRepository, CategoryRepository categoryRepository) {
+	public CommandLineRunner bookstoreRunner(BookRepository bookRepository, CategoryRepository categoryRepository,
+			AppUserRepository appUserRepository) {
 		return (args) -> {
 			log.info("Tallennetaan esimerkkikategoriat tietokantaan");
 			Category fantasy = categoryRepository.save(new Category("Fantasy"));
@@ -42,6 +45,17 @@ public class BookstoreApplication {
 			log.info("Tietokannan kirjat:");
 			for (Book book : bookRepository.findAll()) {
 				log.info(book.toString());
+			}
+
+			// Kayttajat user/user (USER) ja admin/admin (ADMIN). Salasanat tallennetaan
+			// BCrypt-tiivisteina. Tarkistus tarvitaan, koska testeissa toinen Spring-konteksti
+			// kayttaa samaa muistitietokantaa, eika uniikkia kayttajanimea voi lisata uudelleen.
+			if (appUserRepository.count() == 0) {
+				log.info("Tallennetaan esimerkkikayttajat tietokantaan");
+				appUserRepository.save(new AppUser("user",
+						"$2a$10$kXh/VNTJIyb8YiOZ/YOHDuiCXtk4Dow6db4BrkL1QXaTzeDAnzuv6", "user@example.com", "USER"));
+				appUserRepository.save(new AppUser("admin",
+						"$2a$10$50ZMM0v9bx538wmQGTQlOOyYtPRWaOkK0NMRpScd1DZO9mNxU64DW", "admin@example.com", "ADMIN"));
 			}
 		};
 	}

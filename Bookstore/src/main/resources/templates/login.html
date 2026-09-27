@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Login</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Login</h1>
+			<!-- Spring Security ohjaa epaonnistuneen kirjautumisen osoitteeseen /login?error
+			     ja uloskirjautumisen osoitteeseen /login?logout -->
+			<div class="alert alert-danger" th:if="${param.error}">Invalid username or password.</div>
+			<div class="alert alert-success" th:if="${param.logout}">You have been signed out.</div>
+			<!-- th:action lisaa lomakkeeseen automaattisesti piilotetun CSRF-tunnisteen -->
+			<form th:action="@{/login}" method="post">
+				<div class="mb-3">
+					<label for="username">Username</label>
+					<input type="text" class="form-control" id="username" name="username" />
+				</div>
+				<div class="mb-3">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="password" name="password" />
+				</div>
+				<input type="submit" class="btn btn-primary" value="Sign In" />
+			</form>
+		</div>
+	</body>
+</html>

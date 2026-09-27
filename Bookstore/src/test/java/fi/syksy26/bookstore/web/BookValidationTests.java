@@ -1,5 +1,6 @@
 package fi.syksy26.bookstore.web;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -10,11 +11,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-// Testaa, etta /save hylkaa virheelliset syotteet ja hyvaksyy kelvolliset
+// Testaa, etta /save hylkaa virheelliset syotteet ja hyvaksyy kelvolliset.
+// Pyynnot tehdaan kirjautuneena USER-kayttajana ja CSRF-tunnisteen kanssa.
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 class BookValidationTests {
 
 	@Autowired
@@ -22,7 +26,7 @@ class BookValidationTests {
 
 	@Test
 	void emptyFormReturnsToAddFormWithErrors() throws Exception {
-		mockMvc.perform(post("/save")
+		mockMvc.perform(post("/save").with(csrf())
 				.param("title", "")
 				.param("author", "")
 				.param("publicationYear", "0")
@@ -36,7 +40,7 @@ class BookValidationTests {
 
 	@Test
 	void invalidIsbnIsRejected() throws Exception {
-		mockMvc.perform(post("/save")
+		mockMvc.perform(post("/save").with(csrf())
 				.param("title", "Test")
 				.param("author", "Author")
 				.param("publicationYear", "2000")
@@ -50,7 +54,7 @@ class BookValidationTests {
 
 	@Test
 	void validBookIsSavedAndRedirects() throws Exception {
-		mockMvc.perform(post("/save")
+		mockMvc.perform(post("/save").with(csrf())
 				.param("title", "Test")
 				.param("author", "Author")
 				.param("publicationYear", "2000")
@@ -63,7 +67,7 @@ class BookValidationTests {
 
 	@Test
 	void editWithErrorsReturnsToEditForm() throws Exception {
-		mockMvc.perform(post("/save")
+		mockMvc.perform(post("/save").with(csrf())
 				.param("id", "1")
 				.param("title", "")
 				.param("author", "Author")

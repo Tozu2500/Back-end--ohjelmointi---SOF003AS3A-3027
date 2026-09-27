@@ -1,5 +1,6 @@
 package fi.syksy26.bookstore.web;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,12 @@ public class BookController {
     public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
         this.categoryRepository = categoryRepository;
+    }
+
+    // Kirjautumissivu. Spring Security kasittelee lomakkeen lahetyksen (POST /login).
+    @GetMapping("/login")
+    public String login() {
+        return "login"; // login.html
     }
 
     // Etusivu ohjaa kirjalistaan
@@ -64,8 +71,10 @@ public class BookController {
         return "redirect:/booklist";
     }
 
-    // Poistaa kirjan id:n perusteella
+    // Poistaa kirjan id:n perusteella. Vain ADMIN-rooli saa poistaa,
+    // vaikka osoite kirjoitettaisiin suoraan selaimeen.
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteBook(@PathVariable("id") Long bookId) {
         bookRepository.deleteById(bookId);
         return "redirect:/booklist";
