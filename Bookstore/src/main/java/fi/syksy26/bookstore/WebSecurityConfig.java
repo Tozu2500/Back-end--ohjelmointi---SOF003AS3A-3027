@@ -13,9 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity // mahdollistaa @PreAuthorize-annotaatiot controllereissa
 public class WebSecurityConfig {
 
-    // Kirjautuminen kayttaa tietokannan kayttajia (AppUser) muistinvaraisten kayttajien sijaan:
-    // Spring Security hakee kayttajat UserDetailServiceImpl-palvelulla (ainoa UserDetailsService-bean)
-    // ja vertaa salasanaa tietokantaan tallennettuun BCrypt-tiivisteeseen taman beanin avulla.
+    // Kirjautuminen käyttää tietokannan käyttäjiä (AppUser) muistinvaraisten käyttäjien sijaan:
+    // Spring Security hakee käyttäjät UserDetailServiceImpl-palvelulla (ainoa UserDetailsService-bean)
+    // ja vertaa salasanaa tietokantaan tallennettuun BCrypt-tiivisteeseen tämän beanin avulla.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

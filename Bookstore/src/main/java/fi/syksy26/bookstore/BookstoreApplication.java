@@ -47,9 +47,9 @@ public class BookstoreApplication {
 				log.info(book.toString());
 			}
 
-			// Kayttajat user/user (USER) ja admin/admin (ADMIN). Salasanat tallennetaan
-			// BCrypt-tiivisteina. Tarkistus tarvitaan, koska testeissa toinen Spring-konteksti
-			// kayttaa samaa muistitietokantaa, eika uniikkia kayttajanimea voi lisata uudelleen.
+			// Käyttäjät user/user (USER) ja admin/admin (ADMIN). Salasanat tallennetaan
+			// BCrypt-tiivisteinä. Tarkistus tarvitaan, koska testeissä toinen Spring-konteksti
+			// käyttää samaa muistitietokantaa, eikä uniikkia käyttäjänimeä voi lisätä uudelleen.
 			if (appUserRepository.count() == 0) {
 				log.info("Tallennetaan esimerkkikayttajat tietokantaan");
 				appUserRepository.save(new AppUser("user",
